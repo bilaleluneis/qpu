@@ -16,7 +16,7 @@
 
 // When in EMULATION_MODE allocate memory from a pre-allocated pool.
 
-#include "Target/Emulator.h"
+#include "../Target/Emulator.h"
 
 // Implementation
 template <typename T> class SharedArray {

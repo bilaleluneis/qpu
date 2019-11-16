@@ -1,25 +1,21 @@
 cmake_minimum_required(VERSION 3.13)
 project(qpu)
 
-set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-option(QPU_MODE "RUN ON VPU/QPU/GPU" ON) # if set to off will run on emulation mode
-option(DEBUG "ENABLE DEBUGGING LOGS" OFF)
 
 add_compile_options(-Wconversion)
 add_compile_options(-fpermissive)
 add_compile_options(-std=c++0x)
 
-if(QPU_MODE)
-    add_compile_definitions(QPU_MODE)
-endif()
-
-if(DEBUG)
-    add_compile_definitions(DEBUG)
-endif()
-
-add_executable(qpu main.cpp
+#add_compile_definitions(DEBUG) # ENABLE DEBUGGING LOGS
+#add_compile_definitions(EMULATION_MODE) # USE EMULATION MODE
+add_compile_definitions(QPU_MODE) # USE ACTUAL HARDWARED QPU ON VPU OF THE GPU UP TO 12 CORES ARE AVAILABLE
+#add_compile_definitions(USE_SCALAR_VERSION) # THIS IS FOR main.cpp to use cpu version vs qpu version
+add_subdirectory(pybind11)
+pybind11_add_module(
+        qpu
+        matrix_operations.cpp
         lib/Kernel.h lib/Kernel.cpp
         lib/Params.h
         lib/QPULib.h
@@ -52,4 +48,4 @@ add_executable(qpu main.cpp
         lib/Source/Float.h lib/Source/Float.cpp
         lib/Source/Cond.h
         lib/Common/Heap.h lib/Common/Seq.h lib/Common/Stack.h
-        )
+)
